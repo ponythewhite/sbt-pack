@@ -327,13 +327,13 @@ object Pack extends sbt.Plugin {
           tarEntry.getHeader.mode = Integer.parseInt("0755", 8)
         tarfile.putNextEntry(tarEntry)
       }
-      tarEntry(new File("."), archiveStem)
+      //tarEntry(new File("."), archiveStem)
       val excludeFiles = Set("Makefile", "VERSION")
       val buffer = Array.fill(1024 * 1024)(0: Byte)
       def addFilesToTar(dir: File): Unit = dir.listFiles.
         filterNot(f => excludeFiles.contains(rpath(distDir, f))).foreach {
         file =>
-          tarEntry(file, archiveStem ++ "/" ++ rpath(distDir, file))
+          tarEntry(file, rpath(distDir, file))
           if (file.isDirectory) addFilesToTar(file)
           else {
             def copy(input: InputStream): Unit = input.read(buffer) match {
